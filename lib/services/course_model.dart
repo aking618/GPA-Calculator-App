@@ -5,19 +5,24 @@ class Course {
 
   Course(this.title, this.grade, this.number);
 
-  @JsonKey(name:'title')
+  @JsonKey(name: 'title')
   String title;
 
-  @JsonKey(name:'number')
+  @JsonKey(name: 'number')
   String number;
 
-  @JsonKey(name:'grade')
+  @JsonKey(name: 'grade')
   String grade;
 
-  //factory CourseList.fromJson
+  factory Course.fromJson (Map<String, dynamic> json) {
+    return Course(
+      json['title'] as String,
+      json['number'] as String,
+      json['grade'] as String,
+    );
+  }
 }
 
-//To Json
 String courseToJson(List<Course> courses) {
   String courseString = "";
 
