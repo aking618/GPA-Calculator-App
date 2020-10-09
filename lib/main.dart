@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 
 import 'package:gpa_calculator/services/courses_model.dart';
+import 'package:gpa_calculator/services/json_storage.dart';
+import 'package:gpa_calculator/services/gpa_calculation.dart';
+import 'package:gpa_calculator/services/formfield.dart';
 
 void main() {
   runApp(new MaterialApp(
@@ -15,39 +18,119 @@ class Home extends StatefulWidget {
 
 class _HomeState extends State<Home> {
   CourseList courseList;
+  double gpa = 4.0;
 
-  // FIXME: override initState and pass in CourseList to 'readCourseData'
+  void removeCourse(int index) async {
+    courseList.courses.removeAt(index);
+    await writeCourseData(courseList);
+  }
 
-  // FIXME: add json_management dart file
-
-  // FIXME: import path provider
-
-  // FIXME: add list builder
+  @override
+  void initState() {
+    super.initState();
+    readCourseData().then((CourseList list) {
+      setState(() => courseList = list);
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
+
+    setState(() {
+      gpa = getGPA(courseList);
+    });
+
     return Scaffold(
       appBar: AppBar(
           title: Text("GPA Calculator"),
       centerTitle: true,
       ),
-      body: Column(
-
-        children: <Widget>[
-          RaisedButton(
-            onPressed: (){
-              print("1");
-            },
-            child: Text(
-              "Test 1",
-              style: TextStyle(
-                fontSize: 25.0,
-                color: Colors.orangeAccent[400],
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          _onWillPop();
+        },
+        child: Icon(Icons.add),
+      ),
+      body: Container(
+        padding: EdgeInsets.fromLTRB(10.0, 10.0, 10.0, 0.0),
+        width: double.maxFinite,
+        child: Column(
+          children: <Widget>[
+            Expanded(
+              child: Card(
+                elevation: 5.0,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(12.0),
+                ),
+                child: ListView.builder(
+                  itemCount: courseList.courses.length,
+                  itemBuilder: (context, index) {
+                    return ListTile(
+                      title: Text(
+                          courseList.courses[index].title,
+                      ),
+                      subtitle: Text(
+                        courseList.courses[index].number,
+                      ),
+                      trailing: Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: <Widget>[
+                          Text(
+                            courseList.courses[index].grade,
+                          ),
+                          IconButton(
+                            icon: Icon(Icons.delete_forever),
+                            onPressed: () async {
+                              removeCourse(index);
+                              CourseList newCourseList = await readCourseData();
+                              setState(() {
+                                courseList = newCourseList;
+                              });
+                            },
+                          )
+                        ],
+                      ),
+                      onTap: () {},
+                    );
+                  },
+                ),
               ),
             ),
+            SizedBox(height: 15.0,),
+            Container(
+              child: RichText(
+                text: TextSpan(
+                  text: 'Current : ${gpa.toStringAsFixed(2)}',
+                  style: TextStyle(
+                    color: Colors.black,
+                    fontSize: 36.0
+                  )
+                ),
+              ),
+            )
+          ],
+        ),
+      ),
+    );
+  }
+
+  Future<bool> _onWillPop() async {
+    return (await showDialog(
+      context: context,
+      builder: (context) => new AlertDialog(
+        title: new Text('New Course?'),
+        content: new Text('Did you pass this time?'),
+        actions: <Widget>[
+          new FlatButton(
+            onPressed: () => Navigator.of(context).pop(false),
+            child: new Text('No'),
+          ),
+          new FlatButton(
+            onPressed: () => Navigator.of(context).pop(true),
+            child: new Text('Yes'),
           ),
         ],
       ),
-    );
+    )) ?? false;
   }
 }

@@ -2,27 +2,27 @@
   "courses": [
     {
       "title": "MUSI",
-      "number": "4600",
+      "number": "1",
       "grade": "A"
     },
     {
       "title": "ENGL",
-      "number": "1113",
+      "number": "3",
       "grade": "B"
     },
     {
       "title": "HIST",
-      "number": "1813",
+      "number": "3",
       "grade": "B"
     },
     {
       "title": "MATH",
-      "number": "1513",
+      "number": "3",
       "grade": "A"
     },
     {
       "title": "SPAN",
-      "number": "1413",
+      "number": "3",
       "grade": "C"
     }
   ]

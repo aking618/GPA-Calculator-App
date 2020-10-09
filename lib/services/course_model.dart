@@ -3,7 +3,7 @@ import 'package:json_annotation/json_annotation.dart';
 @JsonSerializable(explicitToJson: true)
 class Course {
 
-  Course(this.title, this.grade, this.number);
+  Course(this.title, this.number, this.grade);
 
   @JsonKey(name: 'title')
   String title;

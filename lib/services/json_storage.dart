@@ -41,7 +41,7 @@ Future<String> _loadCourseListAsset () async {
   return await rootBundle.loadString('assets/filler.json');
 }
 
-Future loadFillerCourseData () async {
+Future<CourseList> loadFillerCourseData () async {
   String jsonString = await _loadCourseListAsset();
   final jsonResponse = jsonDecode(jsonString);
   CourseList courseList = CourseList.fromJson(jsonResponse);
