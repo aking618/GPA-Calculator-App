@@ -47,7 +47,13 @@ class _HomeState extends State<Home> {
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          _onWillPop();
+            //newCourseFormField(context, courseList);
+          showDialog(
+              context: context,
+              builder: (BuildContext context) {
+                return newCourseFormField(context, courseList);
+              }
+          ).then((_) => setState((){}));
         },
         child: Icon(Icons.add),
       ),
@@ -112,25 +118,5 @@ class _HomeState extends State<Home> {
         ),
       ),
     );
-  }
-
-  Future<bool> _onWillPop() async {
-    return (await showDialog(
-      context: context,
-      builder: (context) => new AlertDialog(
-        title: new Text('New Course?'),
-        content: new Text('Did you pass this time?'),
-        actions: <Widget>[
-          new FlatButton(
-            onPressed: () => Navigator.of(context).pop(false),
-            child: new Text('No'),
-          ),
-          new FlatButton(
-            onPressed: () => Navigator.of(context).pop(true),
-            child: new Text('Yes'),
-          ),
-        ],
-      ),
-    )) ?? false;
   }
 }

@@ -11,13 +11,17 @@ class CourseList {
   List<Course> courses;
 
   String courseListToJson(CourseList courseList) {
-    String courseList = "";
+    String list = "";
 
-    if (courseList.length > 0) {
-      courseList = '{"courses":[${courseToJson(courses)}]}';
+    if (courseList.courses.length > 0) {
+      list = '{"courses":[${courseToJson(courses)}]}';
     }
 
-    return courseList;
+    print(courseList.courses.length);
+    print('before');
+    print(list);
+    print('after');
+    return list;
   }
 
 

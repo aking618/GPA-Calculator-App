@@ -28,8 +28,8 @@ String courseToJson(List<Course> courses) {
 
   for (int i = 0; i < courses.length; i++) {
     courseString += '{"title": "${courses[i].title}",'
-        '"number": ${courses[i].number}",'
-        '"grade": ${courses[i].grade}"';
+        '"number": "${courses[i].number}",'
+        '"grade": "${courses[i].grade}"}';
 
     if (!(i == courses.length - 1)) {
       courseString += ',';
